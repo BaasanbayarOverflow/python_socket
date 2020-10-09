@@ -25,36 +25,35 @@ def client(conn, addr):
             if (data):
                 msgBack = f"<{addr}> {data}"
                 print(msgBack)
-                transmitt(conn, msg)
+                transmitter(conn, msgBack)
             else:
-                remove(conn)   
+                remove(conn)
 
         except:
-            continue    
+            continue
 
-def transmitt(conn, msg):
+def transmitter(conn, msg):
     for user in connected_users:
         if (conn != user):
-            try:
-                user.send(msg)
-            except:
-                user.close()
-                remove(user)    
+            user.send(msg.encode('utf-8'))
+        else:
+            print(False)
 
 def remove(conn):
     if conn in connected_users:
-        connected_users.remove(conn) 
+        connected_users.remove(conn)
 
 def main():
 
     while (True):
         conn, addr = server.accept()
         print(f"Device connected: {addr[0]}::{addr[1]}")
+        connected_users.append(conn)
 
         _thread.start_new_thread(client, (conn, addr))
-    
+
     conn.close()
-    server.close()    
+    server.close()
 
 if __name__ == "__main__":
     main()

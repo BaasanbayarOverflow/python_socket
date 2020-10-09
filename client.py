@@ -1,4 +1,4 @@
-import socket 
+import socket
 import select
 import sys
 
@@ -21,11 +21,11 @@ buffer = 2048
 
 def main():
     try:
-        server.connect((ip_address, port)) 
+        server.connect((ip_address, port))
     except:
-        print("Server is not started yet") 
-        exit()    
-    
+        print("Server is not started yet")
+        exit()
+
     while (True):
         socket_list = [sys.stdin, server]
         read_sockets, write_socket, error_socket = select.select(socket_list, [], [])
@@ -33,13 +33,13 @@ def main():
         for sock in read_sockets:
             if sock == server:
                 data = sock.recv(buffer)
-                data = str(data.decode('acsii'))
+                data = str(data.decode('utf-8'))
                 print(data)
-            else: 
-                data = rew_input()
-                server.send(bin(data))
+            else:
+                data = input("Message - ")
+                server.send(data.encode('utf-8'))
                 print(f"<Me> {data}")
     server.close()
 
 if __name__ == "__main__":
-    main()    
+    main()
