@@ -38,6 +38,7 @@ def transmitter(conn, msg):
             user.send(msg.encode('utf-8'))
         else:
             print(False)
+        print(user)
 
 def remove(conn):
     if conn in connected_users:

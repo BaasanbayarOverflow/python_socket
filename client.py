@@ -29,16 +29,16 @@ def main():
     while (True):
         socket_list = [sys.stdin, server]
         read_sockets, write_socket, error_socket = select.select(socket_list, [], [])
-
         for sock in read_sockets:
             if sock == server:
                 data = sock.recv(buffer)
-                data = str(data.decode('utf-8'))
+                data = str(data.decode())
+                if (data[23] == 'b'):
+                    data = data[:23] + data[24] + data[25:]
                 print(data)
             else:
-                data = input("Message - ")
-                server.send(data.encode('utf-8'))
-                print(f"<Me> {data}")
+                data = input().encode('utf-8')
+                server.send(data)
     server.close()
 
 if __name__ == "__main__":
